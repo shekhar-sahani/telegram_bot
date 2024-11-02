@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.env
+*.db
+
+# Virtual environments
+venv/
+env/
+myenv/
+ENV/
+.venv/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
+*.bak
+
+# Other files
+*.zip
+*.tar.gz
+*.tgz
+*.7z
+*.rar
