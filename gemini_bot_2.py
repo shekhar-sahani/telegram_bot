@@ -10,7 +10,7 @@ client = TelegramClient('twinkle', API_ID, API_HASH)
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Default reply message
-DEFAULT_REPLY_MESSAGE = "Again this didn't work!.... -_-."
+DEFAULT_REPLY_MESSAGE = "Oops! It seems like that didn't work out for me! 😅"
 
 # Custom messages for specific user IDs
 custom_replies = {
@@ -24,8 +24,9 @@ bot_active = False
 async def get_ai_reply(message_text):
     try:
         # Use the GenerativeModel to get a response
-        model = genai.GenerativeModel("gemini-1.5-pro")  # Make sure the model name is correct
-        response = model.generate_content(message_text)
+        prompt = f"You are Twinkle, a friendly human assistant. Respond to the user's message in a warm, conversational, and helpful manner. User says: '{message_text}'"
+        model = genai.GenerativeModel("gemini-1.5-pro")
+        response = model.generate_content(prompt)
         ai_reply = response.text.strip()
         return ai_reply
     except Exception as e:
