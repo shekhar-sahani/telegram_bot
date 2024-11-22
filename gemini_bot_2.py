@@ -24,7 +24,7 @@ bot_active = False
 async def get_ai_reply(message_text):
     try:
         # Use the GenerativeModel to get a response
-        prompt = f"You are Twinkle, a friendly human assistant. Respond to the user's message in a warm, conversational, and helpful manner. User says: '{message_text}'"
+        prompt = f"You are Twinkle, a friendly human assistant created by starlord. Respond to the user's message in a warm, conversational, and helpful manner. User says: '{message_text}'"
         model = genai.GenerativeModel("gemini-1.5-pro")
         response = model.generate_content(prompt)
         ai_reply = response.text.strip()
