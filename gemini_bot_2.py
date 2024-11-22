@@ -14,17 +14,20 @@ DEFAULT_REPLY_MESSAGE = "Oops! It seems like that didn't work out for me! 😅"
 
 # Custom messages for specific user IDs
 custom_replies = {
-    918603349981: "Hey, Sujata! What are you doing?",
+    918603349981: "Hey, ! What are you doing?",
 }
 
 # Flag to track if the bot is active
 bot_active = False
 
 # Function to get AI-generated reply from Gemini
-async def get_ai_reply(message_text):
+async def get_ai_reply(message_text, user_name=None):
     try:
         # Use the GenerativeModel to get a response
-        prompt = f"You are Twinkle, a friendly human assistant created by starlord. Respond to the user's message in a warm, conversational, and helpful manner. User says: '{message_text}'"
+        if user_name:
+            prompt = f"You are Twinkle, a friendly human assistant created by starlord. The user's name is {user_name}. Respond to the user's message in a warm, conversational, and helpful manner. User says: '{message_text}'"
+        else:   
+            prompt = f"You are Twinkle, a friendly human assistant created by starlord. Respond to the user's message in a warm, conversational, and helpful manner. User says: '{message_text}'"
         model = genai.GenerativeModel("gemini-1.5-pro")
         response = model.generate_content(prompt)
         ai_reply = response.text.strip()
@@ -53,6 +56,11 @@ async def auto_reply(event):
 
         # If the bot is active, generate replies
         if bot_active:
+
+            # Try to get the sender's username or first name
+            sender = await event.get_sender()
+            user_name = sender.username or sender.first_name
+            
             # Check if there's a custom reply for this user
             custom_message = custom_replies.get(event.sender_id, None)
             
@@ -61,7 +69,7 @@ async def auto_reply(event):
                 reply_message = custom_message
             else:
                 # Use AI to generate a response if no custom reply is found
-                reply_message = await get_ai_reply(event.message.message)
+                reply_message = await get_ai_reply(event.message.message, user_name)
 
             # Reply to the sender
             await event.reply(reply_message)
