@@ -19,6 +19,7 @@ custom_replies = {
 
 # Flag to track if the bot is active
 bot_active = False
+saved_messages_bot_active = False
 
 # Function to get AI-generated reply from Gemini
 async def get_ai_reply(message_text, user_name=None):
@@ -35,6 +36,31 @@ async def get_ai_reply(message_text, user_name=None):
     except Exception as e:
         print(f"Error generating AI reply: {e}")
         return DEFAULT_REPLY_MESSAGE
+
+
+@client.on(events.NewMessage(outgoing=True))
+async def handle_saved_messages(event):
+    global saved_messages_bot_active
+
+    me = await client.get_me()
+
+    if event.sender_id == me.id and event.chat_id == me.id:
+        # Handle commands in Saved Messages
+        if event.message.message.lower() == "start":
+            saved_messages_bot_active = True
+            await event.reply("✨ Yay! Twinkle is here to spread joy! Ready to shine bright for you! ✨")
+            return
+
+        elif event.message.message.lower() == "stop":
+            saved_messages_bot_active = False
+            await event.reply("🌟 Oh no! Twinkle will miss you! Don't forget to call me back to sparkle again! 🌈")
+            return
+
+        # If the bot is active, generate a reply
+        if saved_messages_bot_active:
+            reply_message = await get_ai_reply(event.message.message)
+            await event.reply(reply_message)
+            print(f"Replied to Saved Messages with: {reply_message}")
 
 # Define the auto-reply function
 @client.on(events.NewMessage(incoming=True))
