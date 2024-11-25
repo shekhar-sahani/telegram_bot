@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Expose the port the app will run on (optional)
-EXPOSE 8080
+EXPOSE 8000
 
 # Define the command to run your bot
 CMD ["python", "gemini_bot_2.py"]
